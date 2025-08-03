@@ -1,0 +1,16 @@
+{
+  "name": "oidc",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "authenticate.js",
+  "scripts": {
+    "devStart": "nodemon authenticate.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "oidc-provider": "^8.8.1"
+  }
+}
