@@ -37,10 +37,14 @@ class DatabaseModel {
 
         const db = this._getDB();
         try{
-            const isCollection = await db.listCollections({ name: colName }).toArray();
-            if(isCollection) throw new Error(`MongoDB Error: Collection '${colName}' does not exist.`);
-            const collection = await db.collection(colName);
-            if(!collection) throw new Error(`MongoDB Error: Collection '${colName}' does not exist.`);
+            const collectionExists = await db.listCollections({ name: colName }).toArray();
+
+            if (collectionExists.length === 0) {
+            throw new Error(`MongoDB Error: Collection '${colName}' does not exist.`);
+            }
+
+            // Get the collection object only after confirming it exists
+            const collection = db.collection(colName);
             return collection;
         }catch(error){
             console.error(`Error getting collection '${colName}': `, error.message);
@@ -50,7 +54,7 @@ class DatabaseModel {
     async getAllRecords(col){
         
         try {
-            const collection = this._getCollection(col);
+            const collection = await this._getCollection(col);
             const collectionArray = await collection.find({}).toArray();
             return collectionArray;
         }catch(error){
